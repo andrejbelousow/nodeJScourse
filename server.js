@@ -4,7 +4,10 @@ const path = require('path');
 
 const app = express();
 
-const adminRoutes = require('./routes/admin');
+app.set('view engine', 'pug');
+app.set('views', 'views');
+
+const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorRoutes = require('./routes/error');
 
@@ -14,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({extendend: false}));
 
-app.use('/admin', adminRoutes);
+app.use('/admin', adminData.router);
 app.use(shopRoutes);
 app.use(errorRoutes);
 
