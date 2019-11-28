@@ -5,7 +5,7 @@ const path = require('path');
 const router = express.Router();
 
 router.use((req, res, next) => {
-    res.status(404).render('not-found', {pageTitle: 'Page not found'})
+    res.status(404).render('not-found', {pageTitle: 'Page not found', path: ''});
 });
 
 module.exports = router;
