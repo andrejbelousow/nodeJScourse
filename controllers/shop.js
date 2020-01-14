@@ -12,6 +12,21 @@ exports.getProducts = (req, res, next) => {
         .catch(err => console.log(err));   
 };
 
+exports.getProduct = (req, res, next) => {
+    const prodId = req.body.productId;
+    // Product.findById(prodId)
+    //     .then(([product]) => {
+    //         res.render('shop/product-list', {
+    //             prods: product,
+    //             pageTitle: product.title,
+    //             path: '/products',
+    //         });
+    //     })
+    //     .catch(err => console.log(err));
+    console.log(prodId);
+    res.redirect('/');
+}
+
 exports.getIndex = (req, res, next) => {
     Product.fetchAll()
         .then(([rows, fieldData]) => {
