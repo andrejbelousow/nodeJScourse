@@ -19,7 +19,7 @@ exports.getProduct = (req, res, next) => {
         .then(([product]) => {
             let productDb = product[0];
             res.render('shop/product-detail', {
-                prods: productDb,
+                product: productDb,
                 pageTitle: productDb.title,
                 path: '/products',
             });
