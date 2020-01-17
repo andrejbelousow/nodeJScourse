@@ -17,9 +17,10 @@ exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
     Product.findById(prodId)
         .then(([product]) => {
-            res.render('shop/product-list', {
-                prods: product,
-                pageTitle: product.title,
+            let productDb = product[0];
+            res.render('shop/product-detail', {
+                prods: productDb,
+                pageTitle: productDb.title,
                 path: '/products',
             });
         })
