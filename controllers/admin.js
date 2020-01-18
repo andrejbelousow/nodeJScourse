@@ -40,6 +40,21 @@ exports.getEditProduct = (req, res, next) => {
   });
 };
 
+exports.postEditProduct = (req, res, next) => {
+  const prodId = req.body.productId,
+        updatedTitle = req.body.title,
+        updatedPrice = req.body.price,
+        updatedImageUrl = req.body.imageUrl,
+        updatedDescription = req.body.description,
+
+        updatedProduct = new Product(prodId, updatedTitle, updatedPrice, updatedImageUrl, updatedDescription);
+        updatedProduct.save()
+          .then(
+            res.redirect('/admin/products')
+          )
+          .catch(err => console.log(err));
+};
+
 exports.getProducts = (req, res, next) => {
   Product.fetchAll()
     .then(([rows, fieldData]) => {

@@ -2,6 +2,7 @@ const db = require('../util/database');
 
 module.exports = class Product {
   constructor(id, title, imageUrl, description, price) {
+    this.id = id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -9,9 +10,14 @@ module.exports = class Product {
   }
 
   save() {
-    return db.execute('INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)', 
-    [this.title, this.price, this.imageUrl, this.description]
+    if(this.id) {
+      return db.execute('INSERT INTO products (title, price, imageUrl, description) WHERE products.id = ? VALUES (?, ?, ?, ?)', 
+      [[this.id] ,[this.title, this.price, this.imageUrl, this.description]]);
+    } else {
+      return db.execute('INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)', 
+      [this.title, this.price, this.imageUrl, this.description]
     );
+    }
   }
 
   static fetchAll() {
