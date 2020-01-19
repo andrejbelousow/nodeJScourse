@@ -5,4 +5,12 @@
         // Analyze the cart => find existing product
         // Add new product/ increase quantity
     }
+
+    static deleteProduct(id, productPrice) {
+
+    }
+
+    static getPorducts() {
+        
+    }
 }
