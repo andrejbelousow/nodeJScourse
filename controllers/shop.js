@@ -77,7 +77,7 @@ exports.postCart = (req, res, next) => {
             res.redirect('/cart');
         })
         .catch(err => console.log(err));
-};
+66};
 
 exports.postCartDeleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
