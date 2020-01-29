@@ -15,7 +15,9 @@ const errorController = require('./controllers/error');
 const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
+const Order = require('./models/order');
 const cartItem = require('./models/cart-item');
+const orderItem = require('./models/order-item');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -39,9 +41,13 @@ User.hasMany(Product);
 User.hasOne(Cart);
 Cart.belongsTo(User);
 Cart.belongsToMany(Product, {through: cartItem});
-Product.belongsToMany(Cart, {through: cartItem}); 
+Product.belongsToMany(Cart, {through: cartItem});
+Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsToMany(Product, {through: orderItem});
 
-sequelize.sync().then(res => {
+
+sequelize.sync({force: true}).then(res => {
     return User.findByPk(1);
 })
 .then(user => {
