@@ -54,11 +54,6 @@ class Product {
     .deleteOne({_id: new mongodb.ObjectId(prodId)})
   }
 
-  static editProduct(prodId, title, price, description, url) {
-    const db = getDb();
-    
-}
-
 }
 
 module.exports = Product

@@ -2,8 +2,10 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const sequelize = require('./util/database');
+// const sequelize = require('./util/database');
 const MongoConnect = require('./util/database').MongoConnect;
+const mongodb = require('mongodb');
+const User = require('./models/user');
 
 const app = express();
 
@@ -21,7 +23,15 @@ MongoConnect(() => {
     app.listen(3000);
 });
 
+let userId;
+
 app.use((req, res, next) => {
+    User.findById('5e387ba1d9b8ea3a7c4ca69b')
+        .then(user => {
+            req.user = user;
+            next()
+        })
+        .catch(err => console.log(err));
     next();
 });
 
