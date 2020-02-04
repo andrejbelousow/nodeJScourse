@@ -23,16 +23,13 @@ MongoConnect(() => {
     app.listen(3000);
 });
 
-let userId;
-
 app.use((req, res, next) => {
     User.findById('5e387ba1d9b8ea3a7c4ca69b')
         .then(user => {
-            req.user = user;
-            next()
+            req.user = new User(user.name, user.email, user.cart, user._id);
+            next(); 
         })
         .catch(err => console.log(err));
-    next();
 });
 
 app.use('/admin', adminRoutes);
