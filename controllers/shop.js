@@ -8,7 +8,7 @@ exports.getProducts = (req, res, next) => {
             prods: products,
             pageTitle: 'All products',
             path: '/products',
-            isAuthenticated: req.isLoggedIn
+            isAuthenticated: req.get('Cookie').trim().split('=')[1]
         });
     }).catch(err => console.log(err));
 };

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 // const sequelize = require('./util/database');
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
+const session = require('express-session');
 const User = require('./models/user');
 
 const app = express();
@@ -19,6 +20,9 @@ const errorController = require('./controllers/error');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'my secret', resave: false, saveUninitialized: false
+}));
 
 app.use((req, res, next) => {
     User.findById('5e400f480a09162ef0327916')
