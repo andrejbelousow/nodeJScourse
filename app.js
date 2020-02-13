@@ -6,7 +6,15 @@ const bodyParser = require('body-parser');
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const mongoDBStore = require('connect-mongodb-session')(session);
 const User = require('./models/user');
+
+const MONGODB_URI = 'mongodb+srv://andrey:cradmintre3w@firstclaster-70jaz.mongodb.net/shop';
+
+const sessionStore = new mongoDBStore({
+    uri: MONGODB_URI,
+    collection: 'sessions'
+})
 
 const app = express();
 
@@ -20,8 +28,12 @@ const errorController = require('./controllers/error');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
-    secret: 'my secret', resave: false, saveUninitialized: false
+    secret: 'my secret', 
+    resave: false, 
+    saveUninitialized: false,
+    store: sessionStore
 }));
 
 app.use((req, res, next) => {
@@ -39,7 +51,7 @@ app.use(authRoutes);
 
 app.use(errorController.get404);
 
-mongoose.connect('mongodb+srv://andrey:cradmintre3w@firstclaster-70jaz.mongodb.net/shop?retryWrites=true&w=majority')
+mongoose.connect(MONGODB_URI)
 .then(result => {
     User.findOne().then(user => {
         if (!user) {
