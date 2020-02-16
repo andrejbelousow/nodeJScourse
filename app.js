@@ -7,16 +7,18 @@ const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const mongoDBStore = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
 const User = require('./models/user');
 
 const MONGODB_URI = 'mongodb+srv://andrey:cradmintre3w@firstclaster-70jaz.mongodb.net/shop';
 
+const app = express();
 const sessionStore = new mongoDBStore({
     uri: MONGODB_URI,
     collection: 'sessions'
-})
+});
 
-const app = express();
+const csrfProtection = csrf();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -35,6 +37,8 @@ app.use(session({
     saveUninitialized: false,
     store: sessionStore
 }));
+
+app.use(csrfProtection);
 
 app.use((req, res, next) => {
     if (!req.session.user) {
