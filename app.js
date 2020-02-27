@@ -2,6 +2,7 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 // const sequelize = require('./util/database');
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
@@ -21,6 +22,15 @@ const sessionStore = new mongoDBStore({
 
 const csrfProtection = csrf();
 
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -30,6 +40,7 @@ const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({storage: fileStorage}).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
@@ -72,17 +83,16 @@ app.use(shopRoutes);
 app.use(authRoutes);
 
 app.get('/500', errorController.get500);
-
-app.use(errorController.get404);
-
 app.use((error, req, res, next) => {
-    // res.redirect('/500');
-    res.status(500).render('500', {
+    res.status(500).render('505', {
         pageTitle: 'Error!',
-        path: '/500',
+        path: '/505',
         isAuthenticated: req.session.isLoggedIn
     });
 });
+
+app.use(errorController.get404);
+
 
 mongoose.connect(MONGODB_URI)
 .then(result => {
