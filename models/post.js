@@ -8,7 +8,7 @@ const postSchema = new Schema({
         required: true,
     },
     imageUrl: {
-        title: String,
+        type: String,
         required: true
     },
     content: {
@@ -22,3 +22,5 @@ const postSchema = new Schema({
 }, 
 { timestamps: true }
 );
+
+module.exports = mongoose.model('Post', postSchema);
